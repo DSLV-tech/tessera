@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="420" viewBox="0 0 1560 420">
+<defs>
+<linearGradient id="word" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="255"><stop offset="0" stop-color="#fbf1d6"/><stop offset="0.45" stop-color="#f0d47a"/><stop offset="1" stop-color="#9a7a1a"/></linearGradient>
+<linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b130d"/><stop offset="1" stop-color="#0d0906"/></linearGradient>
+</defs>
+<rect width="1560" height="420" rx="36" fill="url(#pageBg)"/>
+<g transform="translate(50,40.0) scale(0.6640625)">
 <defs>
 <clipPath id="round"><rect x="40" y="40" width="432" height="432" rx="96"/></clipPath>
 <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.06"/><stop offset="1" stop-color="#000000" stop-opacity="0.14"/></linearGradient>
@@ -28,4 +34,7 @@
 </g>
 <rect x="40.5" y="40.5" width="431" height="431" rx="95" fill="none" stroke="#000" stroke-opacity="0.45" stroke-width="1.5"/>
 <rect x="43" y="43" width="426" height="426" rx="93" fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1.5"/>
+</g>
+<text x="440" y="248" font-family="ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="140" font-weight="600" letter-spacing="21.0" fill="url(#word)" text-anchor="start">TESSERA</text>
+<text x="444" y="312" font-family="ui-sans-serif, system-ui, sans-serif" font-size="32" letter-spacing="8" fill="#a89a7e">STRATEGIA MATEMATICA</text>
 </svg>

@@ -88,3 +88,49 @@ export function writeSound(enabled: boolean): void {
     /* ignora */
   }
 }
+
+const SEEN_KEY = 'tessera:seen';
+
+/**
+ * Modalità di cui si è già visto il tutorial. Un set in memoria fa da riserva
+ * quando lo storage è vietato, così l'intro non riappare a ogni livello nella
+ * stessa sessione anche senza persistenza.
+ */
+const seenMemory = new Set<string>();
+
+export function loadSeenModes(): ReadonlySet<string> {
+  const result = new Set(seenMemory);
+  if (store !== null) {
+    try {
+      const raw = store.getItem(SEEN_KEY);
+      if (raw !== null) {
+        for (const mode of raw.split(',')) if (mode !== '') result.add(mode);
+      }
+    } catch {
+      /* ignora */
+    }
+  }
+  return result;
+}
+
+export function markSeenMode(mode: string): void {
+  seenMemory.add(mode);
+  if (store === null) return;
+  try {
+    const current = new Set(loadSeenModes());
+    current.add(mode);
+    store.setItem(SEEN_KEY, [...current].join(','));
+  } catch {
+    /* ignora */
+  }
+}
+
+export function clearSeenModes(): void {
+  seenMemory.clear();
+  if (store === null) return;
+  try {
+    store.removeItem(SEEN_KEY);
+  } catch {
+    /* ignora */
+  }
+}

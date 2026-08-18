@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { LEVELS, MODE_LABEL, MODE_TAGLINE } from '../domain/levels/index.ts';
 import type { CampaignProgress, LevelDefinition, LevelMode } from '../domain/types.ts';
 import { Medal } from './Medal.tsx';
+import { Mark } from './Mark.tsx';
 import styles from './LevelSelect.module.css';
 
 interface LevelSelectProps {
@@ -47,6 +48,7 @@ function LevelSelectComponent({
   return (
     <main className={styles.page}>
       <header className={styles.hero}>
+        <Mark size={84} className={styles.mark} />
         <p className={styles.eyebrow}>Gioco di strategia matematica</p>
         <h1 className={styles.title}>TESSERA</h1>
         <p className={styles.subtitle}>

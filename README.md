@@ -78,6 +78,13 @@ applica il fattore di rete. Questo rende possibile un solo solver per sei generi
 
 ---
 
+## Brand e tutorial
+
+Il logo (marchio a mosaico + wordmark) è in `brand/`. Il marchio è una tessera
+composta da sei tessere, una per modalità. Alla prima partita di ogni modalità
+un breve tutorial a step ne spiega la regola chiave; lo stato "modalità viste" è
+persistito (con riserva in memoria) e il pulsante `?` in partita lo riapre.
+
 ## Comandi
 
 ```bash

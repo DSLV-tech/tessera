@@ -4,11 +4,13 @@ import { LEVELS, MODE_LABEL } from '../domain/levels/index.ts';
 import type { CellId, LevelDefinition, MedalTier } from '../domain/types.ts';
 import { useGame } from '../state/useGame.ts';
 import { haptic, sound } from '../audio/sound.ts';
+import { loadSeenModes, markSeenMode } from '../state/storage.ts';
 import { Board } from './Board.tsx';
 import type { MovePreview } from './Board.tsx';
 import { Hud } from './Hud.tsx';
 import { Medal } from './Medal.tsx';
 import { ResultOverlay } from './ResultOverlay.tsx';
+import { TutorialOverlay } from './TutorialOverlay.tsx';
 import styles from './GameView.module.css';
 
 interface GameViewProps {
@@ -32,6 +34,8 @@ export default function GameView({
   const [hovered, setHovered] = useState<CellId | null>(null);
   const [hintOpen, setHintOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(sound.enabled);
+  // Il tutorial della modalità appare solo la prima volta che la si incontra.
+  const [tutorialOpen, setTutorialOpen] = useState(() => !loadSeenModes().has(level.mode));
 
   const { load, state, sim, medal, resolve } = game;
 
@@ -83,6 +87,11 @@ export default function GameView({
     sound.setEnabled(next);
     setSoundOn(next);
   }, []);
+
+  const closeTutorial = useCallback(() => {
+    markSeenMode(level.mode);
+    setTutorialOpen(false);
+  }, [level.mode]);
 
   const preview = useMemo<MovePreview | null>(() => {
     if (hovered === null || resolved || !canPlace(state.board, sim.claimed, sim.blight, hovered)) {
@@ -140,6 +149,15 @@ export default function GameView({
               <span className={styles.sbOf}>/{level.stones}</span>
             </span>
           </div>
+          <button
+            type="button"
+            className={styles.soundBtn}
+            onClick={() => setTutorialOpen(true)}
+            aria-label="Come si gioca questa modalità"
+            title="Come si gioca"
+          >
+            ?
+          </button>
           <button
             type="button"
             className={styles.soundBtn}
@@ -207,6 +225,8 @@ export default function GameView({
           onMap={onExit}
         />
       ) : null}
+
+      {tutorialOpen ? <TutorialOverlay mode={level.mode} onClose={closeTutorial} /> : null}
     </main>
   );
 }
