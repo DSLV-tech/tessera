@@ -13,6 +13,7 @@ interface LevelSelectProps {
   readonly persistent: boolean;
   readonly onSelect: (level: LevelDefinition) => void;
   readonly onReset: () => void;
+  readonly onPrivacy: () => void;
 }
 
 const MODE_ORDER: readonly LevelMode[] = [
@@ -32,6 +33,7 @@ function LevelSelectComponent({
   persistent,
   onSelect,
   onReset,
+  onPrivacy,
 }: LevelSelectProps): React.JSX.Element {
   const totalMedals = LEVELS.length * 3;
   const hasProgress = completed > 0;
@@ -107,7 +109,7 @@ function LevelSelectComponent({
         })}
       </ol>
 
-      <footer className={styles.legend}>
+      <section className={styles.legend}>
         <h2>Le sei modalità</h2>
         <ul>
           {MODE_ORDER.map((mode) => (
@@ -116,6 +118,27 @@ function LevelSelectComponent({
             </li>
           ))}
         </ul>
+      </section>
+
+      <footer className={styles.credits}>
+        <p className={styles.creditLine}>
+          Un gioco{' '}
+          <a
+            className={styles.creditLink}
+            href="https://dslv.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            DSLV.tech
+          </a>
+        </p>
+        <p className={styles.creditMeta}>
+          <button type="button" className={styles.creditButton} onClick={onPrivacy}>
+            Privacy &amp; cookie
+          </button>
+          <span aria-hidden="true"> · </span>
+          <span>© 2026 Digital Solving</span>
+        </p>
       </footer>
     </main>
   );

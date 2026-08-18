@@ -1,0 +1,16 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(201, 162, 39, 0.12), transparent 60%),
+    linear-gradient(160deg, #241811, #16100a 55%, #0d0906);
+  transition: opacity 460ms ease;
+}
+
+.hiding {
+  opacity: 0;
+  pointer-events: none;
+}

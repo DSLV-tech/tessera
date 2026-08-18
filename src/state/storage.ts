@@ -134,3 +134,24 @@ export function clearSeenModes(): void {
     /* ignora */
   }
 }
+
+const LEGAL_KEY = 'tessera:legal';
+
+/** Presa visione dell'informativa privacy/cookie (per non rimostrare il banner). */
+export function loadLegalAck(): boolean {
+  if (store === null) return false;
+  try {
+    return store.getItem(LEGAL_KEY) === 'ack';
+  } catch {
+    return false;
+  }
+}
+
+export function writeLegalAck(): void {
+  if (store === null) return;
+  try {
+    store.setItem(LEGAL_KEY, 'ack');
+  } catch {
+    /* ignora */
+  }
+}

@@ -1,0 +1,68 @@
+.wrap,
+.wrapCompact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.wrap {
+  min-height: 100dvh;
+  gap: 1.1rem;
+}
+
+.wrapCompact {
+  min-height: 60vh;
+}
+
+.mark {
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+}
+
+/* Onda di luce che percorre i sei tasselli in sequenza. */
+.shard {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: shardWave 1.5s ease-in-out infinite both;
+}
+
+@keyframes shardWave {
+  0%,
+  70%,
+  100% {
+    opacity: 0.55;
+    filter: brightness(0.85);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+}
+
+.word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  background: linear-gradient(170deg, #fbf1d6, var(--brass-100) 45%, var(--brass-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.caption {
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: rgba(239, 228, 205, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shard {
+    animation: none;
+    opacity: 1;
+  }
+}
