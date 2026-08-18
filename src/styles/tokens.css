@@ -1,0 +1,69 @@
+:root {
+  /* Tavolo e materiali */
+  --wood-900: #1a120c;
+  --wood-800: #241811;
+  --wood-700: #33231a;
+  --wood-600: #47301f;
+  --felt-900: #10201b;
+  --felt-700: #16302a;
+
+  /* Tessere */
+  --ivory-100: #f3e9d4;
+  --ivory-200: #e6d8ba;
+  --ivory-300: #d3c19c;
+  --ivory-shadow: #9c8763;
+
+  --granite-100: #6f6a63;
+  --granite-200: #524d47;
+  --granite-300: #3a3631;
+
+  /* Pedine */
+  --stone-100: #4a3524;
+  --stone-200: #2f2015;
+  --stone-300: #17100a;
+
+  /* Accenti */
+  --brass-100: #f0d47a;
+  --brass-200: #c9a227;
+  --brass-300: #8a6c14;
+  --wine: #8f2f2f;
+  --wine-bright: #c94c4c;
+  --ink: #241a12;
+  --parchment: #efe4cd;
+
+  --silver: #c8ccd4;
+  --bronze: #c07a41;
+
+  /* Marea (assedio), città (ponti), sigilli (logica), simmetria */
+  --blight-100: #4aa88c;
+  --blight-200: #1c3a30;
+  --blight-300: #0e2019;
+  --city-100: #6f97cc;
+  --city-200: #2f4a6e;
+  --seal-on: #7bd07b;
+  --seal-off: #8a7a56;
+  --violet: #a487d8;
+  --rose: #d98ab0;
+
+  /* Colori identità delle sei modalità (bordo mappa + etichette) */
+  --mode-dominio: var(--brass-100);
+  --mode-assedio: var(--blight-100);
+  --mode-bersaglio: var(--wine-bright);
+  --mode-sigilli: var(--violet);
+  --mode-ponti: var(--city-100);
+  --mode-simmetria: var(--rose);
+
+  --font-display: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-num: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+
+  --shadow-table: 0 40px 80px rgba(0, 0, 0, 0.55);
+  --shadow-tile: 0 2px 0 var(--ivory-shadow), 0 6px 10px rgba(0, 0, 0, 0.35);
+  --shadow-stone: 0 3px 0 #0b0704, 0 8px 14px rgba(0, 0, 0, 0.5);
+
+  --ease-tile: cubic-bezier(0.2, 0.9, 0.25, 1);
+}

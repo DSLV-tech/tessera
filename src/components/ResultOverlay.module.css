@@ -1,0 +1,135 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(8, 5, 3, 0.72);
+  backdrop-filter: blur(5px);
+  animation: fade 200ms ease-out;
+  z-index: 20;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: min(420px, 100%);
+  padding: 2.2rem 2rem 1.6rem;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, #2b1d14, #16100a);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 30px 70px rgba(0, 0, 0, 0.6);
+  animation: rise 260ms var(--ease-tile);
+}
+
+.title {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.score {
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--brass-100);
+}
+
+.score span {
+  font-size: 0.9rem;
+  color: rgba(239, 228, 205, 0.5);
+}
+
+.detail {
+  margin: 0 0 0.8rem;
+  font-size: 0.86rem;
+  color: rgba(239, 228, 205, 0.7);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.ghost,
+.primary {
+  padding: 0.62rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: transform 140ms var(--ease-tile), filter 140ms var(--ease-tile);
+}
+
+.ghost {
+  background: rgba(239, 228, 205, 0.09);
+  color: var(--parchment);
+}
+
+.primary {
+  background: linear-gradient(160deg, var(--brass-100), var(--brass-200));
+  color: var(--ink);
+}
+
+.ghost:hover,
+.primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+}
+
+.medalPop {
+  display: grid;
+  place-items: center;
+  animation: medalIn 460ms var(--ease-tile) both;
+}
+
+.medalGold {
+  border-radius: 50%;
+  animation:
+    medalIn 460ms var(--ease-tile) both,
+    goldGlow 1.8s ease-in-out 0.4s infinite;
+}
+
+@keyframes medalIn {
+  0% {
+    transform: scale(0.2) rotate(-90deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.18) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes goldGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(240, 212, 122, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(240, 212, 122, 0.9));
+  }
+}

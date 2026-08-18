@@ -1,0 +1,328 @@
+/*
+ * Layout mobile-first.
+ * Default = telefono: barra di stato appiccicata in alto (punteggio e pedine
+ * sempre in vista), tabellone a piena larghezza, barra azioni appiccicata in
+ * basso raggiungibile col pollice. Da 820px in su si passa a due colonne.
+ */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  animation: viewIn 260ms ease both;
+}
+
+@keyframes viewIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Barra di stato (sticky top) ─────────────────────────────────────── */
+.statusbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  padding-top: calc(0.55rem + env(safe-area-inset-top));
+  background: rgba(12, 8, 5, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 1px 0 rgba(239, 228, 205, 0.1),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.sbLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.back {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--parchment);
+  background: rgba(239, 228, 205, 0.09);
+  transition: background 140ms var(--ease-tile);
+}
+
+.back:hover {
+  background: rgba(239, 228, 205, 0.16);
+}
+
+.sbHead {
+  min-width: 0;
+}
+
+.sbEyebrow {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-200);
+  white-space: nowrap;
+}
+
+.sbTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sbStats {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: none;
+}
+
+.sbBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.sbRight {
+  align-items: flex-end;
+}
+
+.sbLabel {
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(239, 228, 205, 0.5);
+  white-space: nowrap;
+}
+
+.sbScore,
+.sbStones {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.sbScore {
+  font-size: 1.5rem;
+}
+
+.sbStones {
+  font-size: 1.15rem;
+}
+
+.sbOf {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.deltaUp,
+.deltaDown {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.deltaUp {
+  color: #8fd28f;
+}
+
+.deltaDown {
+  color: var(--wine-bright);
+}
+
+.soundBtn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: rgba(239, 228, 205, 0.85);
+  background: rgba(239, 228, 205, 0.08);
+  transition: background 140ms var(--ease-tile);
+}
+
+.soundBtn:hover {
+  background: rgba(239, 228, 205, 0.16);
+}
+
+.soundBtn[aria-pressed='false'] {
+  color: rgba(239, 228, 205, 0.4);
+}
+
+.sbMedal {
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+
+.scoreNum {
+  display: inline-block;
+  animation: scorePop 240ms var(--ease-tile);
+}
+
+@keyframes scorePop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.22);
+    color: var(--brass-100);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Indizio ─────────────────────────────────────────────────────────── */
+.hint {
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border-left: 3px solid var(--brass-200);
+  background: rgba(201, 162, 39, 0.1);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: rgba(239, 228, 205, 0.88);
+}
+
+/* ── Scena (tabellone + pannello) ────────────────────────────────────── */
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.9rem 0.85rem 1.1rem;
+}
+
+/* ── Barra azioni (sticky bottom) ────────────────────────────────────── */
+.actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  padding-bottom: calc(0.55rem + env(safe-area-inset-bottom));
+  background: rgba(12, 8, 5, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 -1px 0 rgba(239, 228, 205, 0.1),
+    0 -10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.action,
+.confirm {
+  min-height: 46px;
+  border-radius: var(--radius-md);
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition: background 140ms var(--ease-tile), filter 140ms var(--ease-tile);
+}
+
+.action {
+  background: rgba(239, 228, 205, 0.09);
+  color: rgba(239, 228, 205, 0.9);
+}
+
+.action:not(:disabled):hover {
+  background: rgba(239, 228, 205, 0.16);
+}
+
+.action:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.confirm {
+  background: linear-gradient(160deg, var(--brass-100), var(--brass-200));
+  color: var(--ink);
+}
+
+.confirm:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+/* ── Desktop: due colonne, barre non più appiccicate ─────────────────── */
+@media (min-width: 820px) {
+  .layout {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 1.6rem 1.25rem 2.4rem;
+    gap: 1.1rem;
+  }
+
+  .statusbar,
+  .actionbar {
+    position: static;
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  .statusbar {
+    order: 1;
+  }
+
+  .actionbar {
+    order: 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+  }
+
+  .action,
+  .confirm {
+    min-height: 0;
+    padding: 0.55rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .hint {
+    order: 3;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .stage {
+    order: 4;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.6rem;
+    padding: 0;
+  }
+
+  .stage > :first-child {
+    flex: 1 1 480px;
+    min-width: 320px;
+  }
+
+  .sbTitle {
+    font-size: 1.5rem;
+    white-space: normal;
+  }
+
+  .sbScore {
+    font-size: 1.8rem;
+  }
+}

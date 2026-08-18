@@ -1,0 +1,52 @@
+@import './styles/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--parchment);
+  background-color: var(--wood-900);
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(201, 162, 39, 0.14), transparent 60%),
+    repeating-linear-gradient(
+      92deg,
+      rgba(255, 255, 255, 0.018) 0 2px,
+      rgba(0, 0, 0, 0.03) 2px 5px
+    ),
+    linear-gradient(160deg, var(--wood-800), var(--wood-900) 55%, #0d0906);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass-100);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

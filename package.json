@@ -1,0 +1,30 @@
+{
+  "name": "tessera",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:single": "tsc -b && vite build --mode singlefile",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "test": "node --experimental-strip-types tools/spec.ts",
+    "validate": "node --experimental-strip-types tools/spec.ts && node --experimental-strip-types tools/solve.ts"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxlint": "^1.75.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  },
+  "description": "Tessera — sei puzzle di logica matematica su un solo motore (React 18+ / TypeScript): dominio territoriale, assedio dinamico, bersaglio aritmetico esatto, sigilli booleani, reti di città, simmetria."
+}

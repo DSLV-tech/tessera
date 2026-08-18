@@ -1,0 +1,105 @@
+import type { LevelBlueprint } from '../types.ts';
+
+/**
+ * MODALITÀ BERSAGLIO — non si massimizza, si colpisce un valore esatto.
+ * Si ragiona per scomposizione invece che per accumulo: somme, differenze,
+ * fattorizzazioni. L'oro premia chi ci arriva con meno pedine.
+ */
+export const BERSAGLIO_LEVELS: readonly LevelBlueprint[] = [
+  {
+    id: 'b01',
+    mode: 'bersaglio',
+    name: 'Il conto esatto',
+    lesson: 'Qui non vince il punteggio più alto: vince quello esatto. Superare il bersaglio è come mancarlo.',
+    hint: 'Due sole caselle bastano. Cerca la coppia che somma al bersaglio.',
+    grid: [
+      '. . . . .',
+      '. 3 5 7 .',
+      '. 2 4 6 .',
+      '. 1 8 9 .',
+      '. . . . .',
+    ],
+    stones: 3,
+    objective: { kind: 'exact', target: 15, par: 2 },
+  },
+  {
+    id: 'b02',
+    mode: 'bersaglio',
+    name: 'Fattori',
+    lesson: 'Un bersaglio che non è somma di nessun sottoinsieme va raggiunto per prodotto: scomponilo.',
+    hint: '20 non è la somma di nessuna coppia disponibile. Ma è 10 × 2, e il ×2 è al centro.',
+    grid: [
+      '. . . . .',
+      '. . 4 . .',
+      '. 3 .x2 5 .',
+      '. . 6 . .',
+      '. . . . .',
+    ],
+    stones: 4,
+    objective: { kind: 'exact', target: 20, par: 3 },
+  },
+  {
+    id: 'b03',
+    mode: 'bersaglio',
+    name: 'Il resto',
+    lesson: 'Le caselle negative non sono solo trappole: sono lo strumento fine per correggere un eccesso.',
+    hint: 'Prendi tutti i 9 e vai lungo di 4. Poi togli esattamente 4.',
+    grid: [
+      '. . . . . . .',
+      '. 9 . 9 . 9 .',
+      '. . . . . . .',
+      '. -1 . -2 . -4 .',
+      '. . . . . . .',
+    ],
+    stones: 5,
+    objective: { kind: 'exact', target: 23, par: 4 },
+  },
+  {
+    id: 'b04',
+    mode: 'bersaglio',
+    name: 'Due strade',
+    lesson: 'Un bersaglio composto ammette scomposizioni diverse: 48 è 12 × 4 ed è anche 24 × 2.',
+    hint: 'Ci sono due cluster, uno con ×4 e uno con ×2. Ognuno dei due, da solo, può fare 48.',
+    grid: [
+      '. . . . . . . . .',
+      '. . 5 . . . 7 . .',
+      '. 3 .x4 4 . 6 .x2 8 .',
+      '. . 2 . . . 9 . .',
+      '. . . . . . . . .',
+    ],
+    stones: 6,
+    objective: { kind: 'exact', target: 48, par: 4 },
+  },
+  {
+    id: 'b05',
+    mode: 'bersaglio',
+    name: 'La cattura indesiderata',
+    lesson: 'La cattura è automatica: chiudere il cerchio ti aggiunge una casella che non hai scelto, e cambia la somma.',
+    hint: 'Non puoi arrivare a 18 sommando soltanto. Devi chiudere il centro e accettare quel -7.',
+    grid: [
+      '. . . . .',
+      '. 5 5 5 .',
+      '. 5 -7 5 .',
+      '. 5 5 5 .',
+      '. . . . .',
+    ],
+    stones: 6,
+    objective: { kind: 'exact', target: 18, par: 5 },
+  },
+  {
+    id: 'b06',
+    mode: 'bersaglio',
+    name: 'Precisione',
+    lesson: 'Somma, prodotto e cattura nello stesso conto. Un bersaglio esatto ammette spesso due strade: una corta e pulita, una lunga che corregge in negativo.',
+    hint: 'Chiudere il ×3 con le quattro caselle ortogonali fa 48. Da lì mancano 7 — oppure allarga di una casella e togli 5.',
+    grid: [
+      '. . . . . . . . .',
+      '. 4 4 4 . 7 . . .',
+      '. 4 .x3 4 . . . . .',
+      '. 4 4 4 . -5 . . .',
+      '. . . . . . . . .',
+    ],
+    stones: 7,
+    objective: { kind: 'exact', target: 55, par: 6 },
+  },
+];

@@ -1,0 +1,217 @@
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4.5rem) 1.25rem 4rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.4rem);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brass-200);
+}
+
+.title {
+  margin: 0.5rem 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 9vw, 4.6rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  background: linear-gradient(170deg, #fbf1d6, var(--brass-100) 45%, var(--brass-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(239, 228, 205, 0.72);
+}
+
+.stats {
+  margin: 1.1rem 0 0;
+  font-family: var(--font-num);
+  font-size: 0.8rem;
+  color: rgba(239, 228, 205, 0.5);
+}
+
+.memory {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(239, 228, 205, 0.4);
+}
+
+.resetLink {
+  font: inherit;
+  color: var(--brass-200);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.resetLink:hover {
+  color: var(--brass-100);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'index name medal'
+    'index meta medal';
+  align-items: center;
+  gap: 0 0.85rem;
+  width: 100%;
+  min-height: 68px;
+  padding: 1rem 1.05rem;
+  text-align: left;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(160deg, rgba(239, 228, 205, 0.1), rgba(239, 228, 205, 0.03)),
+    rgba(12, 8, 5, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 10px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 160ms var(--ease-tile), box-shadow 160ms var(--ease-tile);
+}
+
+.card:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 34px rgba(0, 0, 0, 0.45);
+}
+
+.locked {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.index {
+  grid-area: index;
+  font-family: var(--font-num);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: rgba(201, 162, 39, 0.75);
+}
+
+.name {
+  grid-area: name;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+}
+
+.meta {
+  grid-area: meta;
+  font-size: 0.72rem;
+  color: rgba(239, 228, 205, 0.5);
+}
+
+.medal {
+  grid-area: medal;
+}
+
+.modeBadge {
+  font-weight: 700;
+}
+
+.mode-dominio {
+  box-shadow: inset 3px 0 0 var(--mode-dominio), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.mode-assedio {
+  box-shadow: inset 3px 0 0 var(--mode-assedio), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.mode-bersaglio {
+  box-shadow: inset 3px 0 0 var(--mode-bersaglio), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.mode-sigilli {
+  box-shadow: inset 3px 0 0 var(--mode-sigilli), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.mode-ponti {
+  box-shadow: inset 3px 0 0 var(--mode-ponti), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.mode-simmetria {
+  box-shadow: inset 3px 0 0 var(--mode-simmetria), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.label-dominio {
+  color: var(--mode-dominio);
+}
+
+.label-assedio {
+  color: var(--mode-assedio);
+}
+
+.label-bersaglio {
+  color: var(--mode-bersaglio);
+}
+
+.label-sigilli {
+  color: var(--mode-sigilli);
+}
+
+.label-ponti {
+  color: var(--mode-ponti);
+}
+
+.label-simmetria {
+  color: var(--mode-simmetria);
+}
+
+.legend {
+  margin-top: 3rem;
+  padding: 1.5rem 1.6rem;
+  border-radius: var(--radius-lg);
+  background: rgba(12, 8, 5, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.legend h2 {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-200);
+}
+
+.legend ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.legend li {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: rgba(239, 228, 205, 0.75);
+}
+
+.legend b {
+  color: var(--parchment);
+}
