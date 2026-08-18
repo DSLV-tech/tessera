@@ -114,62 +114,64 @@ export default function GameView({
   return (
     <main className={styles.layout}>
       <header className={styles.statusbar}>
-        <div className={styles.sbLeft}>
+        <div className={styles.sbTop}>
           <button type="button" className={styles.back} onClick={onExit} aria-label="Torna alla mappa">
             ←
           </button>
-          <div className={styles.sbHead}>
-            <p className={styles.sbEyebrow}>
-              {MODE_LABEL[level.mode]} · {level.index}/{LEVELS.length}
-            </p>
-            <h1 className={styles.sbTitle}>{level.name}</h1>
+          <p className={styles.sbEyebrow}>
+            {MODE_LABEL[level.mode]} · {level.index}/{LEVELS.length}
+          </p>
+          <div className={styles.sbTools}>
+            <button
+              type="button"
+              className={styles.iconBtn}
+              onClick={() => setTutorialOpen(true)}
+              aria-label="Come si gioca questa modalità"
+              title="Come si gioca"
+            >
+              ?
+            </button>
+            <button
+              type="button"
+              className={styles.iconBtn}
+              onClick={toggleSound}
+              aria-pressed={soundOn}
+              aria-label={soundOn ? 'Disattiva il suono' : 'Attiva il suono'}
+              title={soundOn ? 'Suono attivo' : 'Suono spento'}
+            >
+              {soundOn ? '♪' : '⊘'}
+            </button>
           </div>
         </div>
 
-        <div className={styles.sbStats}>
-          <div className={styles.sbBlock}>
-            <span className={styles.sbLabel}>
-              {objective.kind === 'exact' ? `Punti → ${objective.target}` : 'Punti'}
-            </span>
-            <span className={styles.sbScore}>
-              <span key={sim.score} className={styles.scoreNum}>
-                {sim.score}
+        <div className={styles.sbMain}>
+          <h1 className={styles.sbTitle}>{level.name}</h1>
+          <div className={styles.sbStats}>
+            <div className={styles.sbBlock}>
+              <span className={styles.sbLabel}>
+                {objective.kind === 'exact' ? `Punti → ${objective.target}` : 'Punti'}
               </span>
-              {previewDelta !== null && previewDelta !== 0 ? (
-                <span className={previewDelta > 0 ? styles.deltaUp : styles.deltaDown}>
-                  {formatDelta(previewDelta)}
+              <span className={styles.sbScore}>
+                <span key={sim.score} className={styles.scoreNum}>
+                  {sim.score}
                 </span>
-              ) : null}
-            </span>
-          </div>
-          <div className={`${styles.sbBlock} ${styles.sbRight}`}>
-            <span className={styles.sbLabel}>Pedine</span>
-            <span className={styles.sbStones}>
-              {state.stonesLeft}
-              <span className={styles.sbOf}>/{level.stones}</span>
-            </span>
-          </div>
-          <button
-            type="button"
-            className={styles.soundBtn}
-            onClick={() => setTutorialOpen(true)}
-            aria-label="Come si gioca questa modalità"
-            title="Come si gioca"
-          >
-            ?
-          </button>
-          <button
-            type="button"
-            className={styles.soundBtn}
-            onClick={toggleSound}
-            aria-pressed={soundOn}
-            aria-label={soundOn ? 'Disattiva il suono' : 'Attiva il suono'}
-            title={soundOn ? 'Suono attivo' : 'Suono spento'}
-          >
-            {soundOn ? '♪' : '⊘'}
-          </button>
-          <div className={styles.sbMedal} aria-hidden="true">
-            <Medal tier={medal} size={26} />
+                {previewDelta !== null && previewDelta !== 0 ? (
+                  <span className={previewDelta > 0 ? styles.deltaUp : styles.deltaDown}>
+                    {formatDelta(previewDelta)}
+                  </span>
+                ) : null}
+              </span>
+            </div>
+            <div className={`${styles.sbBlock} ${styles.sbRight}`}>
+              <span className={styles.sbLabel}>Pedine</span>
+              <span className={styles.sbStones}>
+                {state.stonesLeft}
+                <span className={styles.sbOf}>/{level.stones}</span>
+              </span>
+            </div>
+            <div className={styles.sbMedal} aria-hidden="true">
+              <Medal tier={medal} size={26} />
+            </div>
           </div>
         </div>
       </header>
