@@ -97,14 +97,20 @@ function CellTileComponent({
       onBlur={() => onHover(null)}
     >
       {state === 'blighted' ? (
-        <span className={styles.blightMark} aria-hidden="true" />
+        <svg className={styles.blightMark} viewBox="0 0 100 100" aria-hidden="true">
+          <use href="#spr-drop" />
+        </svg>
       ) : (
         <span className={`${styles.value} ${valueClass(cell.value)}`}>
           {cell.value === 0 ? '·' : cell.value}
         </span>
       )}
       {cell.multiplier > 1 ? <span className={styles.multiplier}>×{cell.multiplier}</span> : null}
-      {cell.isCity ? <span className={styles.cityMark} aria-hidden="true" /> : null}
+      {cell.isCity ? (
+        <svg className={styles.cityMark} viewBox="0 0 100 100" aria-hidden="true">
+          <use href="#spr-city" />
+        </svg>
+      ) : null}
       {cell.seal !== null ? (
         <span
           className={`${styles.sealBadge} ${sealSatisfied === true ? styles.sealOn : ''}`}
@@ -112,7 +118,11 @@ function CellTileComponent({
           {predicateBadge(cell.seal.predicate)}×{cell.seal.factor}
         </span>
       ) : null}
-      {state === 'claimed' ? <span className={styles.stone} aria-hidden="true" /> : null}
+      {state === 'claimed' ? (
+        <svg className={styles.stone} viewBox="0 0 100 100" aria-hidden="true">
+          <use href="#spr-stone" />
+        </svg>
+      ) : null}
     </button>
   );
 }

@@ -96,13 +96,10 @@
 
 .stone {
   position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.35), transparent 45%),
-    radial-gradient(circle at 60% 70%, var(--stone-100), var(--stone-300) 75%);
-  box-shadow: var(--shadow-stone);
+  inset: 11%;
+  display: block;
   animation: place 220ms var(--ease-tile);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
 }
 
 .previewCaptured {
@@ -132,11 +129,10 @@
 }
 
 .blightMark {
-  width: 46%;
-  height: 46%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.18), transparent 55%), var(--blight-200);
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+  width: 56%;
+  height: 56%;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .previewBlight {
@@ -166,13 +162,12 @@
 
 .cityMark {
   position: absolute;
-  bottom: 3px;
-  left: 4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--city-200);
+  bottom: 6%;
+  left: 6%;
+  width: 30%;
+  height: 30%;
   z-index: 1;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.4));
 }
 
 /* Sigilli (modalità sigilli) */

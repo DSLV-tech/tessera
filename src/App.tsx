@@ -9,6 +9,7 @@ import { Splash } from './components/Splash.tsx';
 import { LevelSelect } from './components/LevelSelect.tsx';
 import { ConsentBanner } from './components/ConsentBanner.tsx';
 import { PrivacyOverlay } from './components/PrivacyOverlay.tsx';
+import { SpriteSheet } from './components/SpriteSheet.tsx';
 
 const GameView = lazy(() => import('./components/GameView.tsx'));
 
@@ -33,6 +34,7 @@ export function App(): React.JSX.Element {
 
   return (
     <ErrorBoundary>
+      <SpriteSheet />
       <Splash />
       <Suspense fallback={<BrandLoader compact />}>
         {current === null ? (

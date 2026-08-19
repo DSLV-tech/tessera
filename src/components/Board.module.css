@@ -15,9 +15,13 @@
 .grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(var(--cols), 1fr);
+  /* minmax(0, 1fr) evita che le colonne restino larghe come il contenuto:
+     sui tabelloni larghi (11 colonne) impedisce l'overflow orizzontale. */
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   gap: clamp(3px, 0.7vw, 6px);
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: clamp(0.5rem, 1.2vw, 0.9rem);
   border-radius: var(--radius-md);
   background:
