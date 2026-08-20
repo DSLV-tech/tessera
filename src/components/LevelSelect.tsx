@@ -1,12 +1,22 @@
 import { memo } from 'react';
 import { LEVELS, MODE_LABEL, MODE_TAGLINE } from '../domain/levels/index.ts';
 import type { CampaignProgress, LevelDefinition, LevelMode } from '../domain/types.ts';
+import type { CampaignRecords, LevelProgress } from '../state/useCampaign.ts';
+import type { DailyStatus } from '../state/useDaily.ts';
+import { DailyCard } from './DailyCard.tsx';
+import { isIosSafari } from '../state/install.ts';
+import { useInstall } from '../state/useInstall.ts';
 import { Medal } from './Medal.tsx';
 import { Mark } from './Mark.tsx';
 import styles from './LevelSelect.module.css';
 
 interface LevelSelectProps {
   readonly progress: CampaignProgress;
+  readonly records: CampaignRecords;
+  readonly dailyStatus: DailyStatus;
+  readonly dailyLevel: LevelDefinition | null;
+  readonly dailyResult: LevelProgress | undefined;
+  readonly totalBest: number;
   readonly medalsWon: number;
   readonly completed: number;
   readonly isUnlocked: (level: LevelDefinition) => boolean;
@@ -27,6 +37,11 @@ const MODE_ORDER: readonly LevelMode[] = [
 
 function LevelSelectComponent({
   progress,
+  records,
+  dailyStatus,
+  dailyLevel,
+  dailyResult,
+  totalBest,
   medalsWon,
   completed,
   isUnlocked,
@@ -37,6 +52,8 @@ function LevelSelectComponent({
 }: LevelSelectProps): React.JSX.Element {
   const totalMedals = LEVELS.length * 3;
   const hasProgress = completed > 0;
+  const install = useInstall();
+  const iosInstall = !install.available && isIosSafari();
 
   const handleReset = (): void => {
     if (!hasProgress) return;
@@ -59,6 +76,7 @@ function LevelSelectComponent({
         </p>
         <p className={styles.stats}>
           {completed}/{LEVELS.length} livelli · {medalsWon}/{totalMedals} medaglie
+          {totalBest > 0 ? ` · ${totalBest} punti totali` : ''}
         </p>
         <p className={styles.memory}>
           {persistent
@@ -73,12 +91,32 @@ function LevelSelectComponent({
             </>
           ) : null}
         </p>
+
+        {install.available ? (
+          <button type="button" className={styles.install} onClick={install.install}>
+            <span aria-hidden="true">↓</span> Installa l’app
+          </button>
+        ) : null}
+        {iosInstall ? (
+          <p className={styles.iosHint}>
+            Per installarla su iPhone: tocca <b>Condividi</b> e poi{' '}
+            <b>Aggiungi a Home</b>.
+          </p>
+        ) : null}
       </header>
+
+      <DailyCard
+        status={dailyStatus}
+        level={dailyLevel}
+        result={dailyResult}
+        onPlay={onSelect}
+      />
 
       <ol className={styles.grid}>
         {LEVELS.map((level) => {
           const unlocked = isUnlocked(level);
           const tier = progress[level.id] ?? 'none';
+          const best = records[level.id]?.best ?? null;
           return (
             <li key={level.id}>
               <button
@@ -95,6 +133,12 @@ function LevelSelectComponent({
                       <span className={styles.modeBadge}>{MODE_LABEL[level.mode]}</span>
                       {' · '}
                       {level.stones} pedine
+                      {best !== null ? (
+                        <>
+                          {' · '}
+                          <span className={styles.best}>record {best}</span>
+                        </>
+                      ) : null}
                     </>
                   ) : (
                     'Completa il livello precedente'

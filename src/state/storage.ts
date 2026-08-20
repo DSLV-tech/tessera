@@ -7,10 +7,20 @@
  * ogni accesso è racchiuso in try/catch e l'app ricade silenziosamente in
  * memoria volatile, senza mai lanciare eccezioni.
  */
-const KEY = 'tessera:v1';
+const KEY = 'tessera:v2';
+/** Chiave del formato precedente, letta una sola volta per non perdere i progressi. */
+const LEGACY_KEY = 'tessera:v1';
+const SCHEMA_VERSION = 2;
 
-interface SaveShape {
-  readonly progress: Record<string, string>;
+/** Ciò che sappiamo di un livello già giocato: medaglia migliore e record di punti. */
+export interface LevelRecord {
+  readonly tier: string;
+  readonly best: number;
+}
+
+export interface SaveShape {
+  readonly version: number;
+  readonly levels: Readonly<Record<string, LevelRecord>>;
 }
 
 function safeLocalStorage(): Storage | null {
@@ -30,24 +40,67 @@ const store = safeLocalStorage();
 /** true quando i progressi verranno effettivamente ricordati fra le sessioni. */
 export const persistenceAvailable = store !== null;
 
-export function loadSave(): SaveShape | null {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+/**
+ * Il formato v1 era `{ progress: { id: medaglia } }`: nessun punteggio salvato.
+ * Lo promuoviamo a v2 mettendo il record a zero — la medaglia è ciò che conta
+ * per lo sblocco, e il punteggio si riempirà alla prossima partita.
+ */
+function migrateFromV1(parsed: unknown): SaveShape | null {
+  if (!isRecord(parsed) || !isRecord(parsed['progress'])) return null;
+  const levels: Record<string, LevelRecord> = {};
+  for (const [id, tier] of Object.entries(parsed['progress'])) {
+    if (typeof tier === 'string') levels[id] = { tier, best: 0 };
+  }
+  return { version: SCHEMA_VERSION, levels };
+}
+
+function parseV2(parsed: unknown): SaveShape | null {
+  if (!isRecord(parsed) || !isRecord(parsed['levels'])) return null;
+  const levels: Record<string, LevelRecord> = {};
+  for (const [id, entry] of Object.entries(parsed['levels'])) {
+    if (!isRecord(entry)) continue;
+    const tier = entry['tier'];
+    const best = entry['best'];
+    if (typeof tier !== 'string') continue;
+    levels[id] = { tier, best: typeof best === 'number' && Number.isFinite(best) ? best : 0 };
+  }
+  return { version: SCHEMA_VERSION, levels };
+}
+
+function readKey(key: string): unknown {
   if (store === null) return null;
   try {
-    const raw = store.getItem(KEY);
-    if (raw === null) return null;
-    const parsed = JSON.parse(raw) as unknown;
-    if (
-      typeof parsed === 'object' &&
-      parsed !== null &&
-      'progress' in parsed &&
-      typeof (parsed as { progress: unknown }).progress === 'object'
-    ) {
-      return parsed as SaveShape;
-    }
-    return null;
+    const raw = store.getItem(key);
+    return raw === null ? null : (JSON.parse(raw) as unknown);
   } catch {
     return null;
   }
+}
+
+/**
+ * Legge il salvataggio, promuovendo i formati vecchi invece di scartarli: un
+ * cambio di schema non deve mai azzerare mesi di partite.
+ */
+export function loadSave(): SaveShape | null {
+  if (store === null) return null;
+  const current = readKey(KEY);
+  if (current !== null) {
+    const parsed = parseV2(current);
+    if (parsed !== null) return parsed;
+  }
+  const legacy = readKey(LEGACY_KEY);
+  if (legacy !== null) {
+    const migrated = migrateFromV1(legacy);
+    if (migrated !== null) {
+      writeSave(migrated);
+      return migrated;
+    }
+  }
+  return null;
 }
 
 export function writeSave(save: SaveShape): void {
@@ -63,6 +116,37 @@ export function clearSave(): void {
   if (store === null) return;
   try {
     store.removeItem(KEY);
+    store.removeItem(LEGACY_KEY);
+    store.removeItem(DAILY_KEY);
+  } catch {
+    /* ignora */
+  }
+}
+
+const DAILY_KEY = 'tessera:daily';
+
+/** Esiti del livello del giorno, indicizzati per data (`daily-2026-08-20`). */
+export function loadDaily(): Readonly<Record<string, LevelRecord>> {
+  const raw = readKey(DAILY_KEY);
+  if (!isRecord(raw)) return {};
+  const clean: Record<string, LevelRecord> = {};
+  for (const [key, entry] of Object.entries(raw)) {
+    if (!isRecord(entry)) continue;
+    const tier = entry['tier'];
+    const best = entry['best'];
+    if (typeof tier !== 'string') continue;
+    clean[key] = { tier, best: typeof best === 'number' && Number.isFinite(best) ? best : 0 };
+  }
+  return clean;
+}
+
+export function writeDaily(entries: Readonly<Record<string, LevelRecord>>): void {
+  if (store === null) return;
+  try {
+    // Si conservano solo le ultime edizioni: lo storico completo non serve a
+    // nulla e farebbe crescere il salvataggio all'infinito.
+    const recent = Object.entries(entries).sort(([a], [b]) => (a < b ? 1 : -1)).slice(0, 30);
+    store.setItem(DAILY_KEY, JSON.stringify(Object.fromEntries(recent)));
   } catch {
     /* ignora */
   }

@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
+import './state/install.ts';
+import { watchForUpdates } from './state/appUpdate.ts';
 import './fonts.css';
 import './index.css';
 
@@ -25,8 +27,13 @@ createRoot(container).render(
 if (__PWA__ && 'serviceWorker' in navigator && globalThis.location.protocol.startsWith('http')) {
   globalThis.addEventListener('load', () => {
     const base = import.meta.env.BASE_URL;
-    navigator.serviceWorker.register(`${base}sw.js`).catch(() => {
-      /* offline non disponibile: l'app funziona comunque online */
-    });
+    navigator.serviceWorker
+      .register(`${base}sw.js`)
+      .then((registration) => {
+        watchForUpdates(registration);
+      })
+      .catch(() => {
+        /* offline non disponibile: l'app funziona comunque online */
+      });
   });
 }

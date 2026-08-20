@@ -97,7 +97,12 @@ function CellTileComponent({
       onBlur={() => onHover(null)}
     >
       {state === 'blighted' ? (
-        <svg className={styles.blightMark} viewBox="0 0 100 100" aria-hidden="true">
+        <svg
+          className={styles.blightMark}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
           <use href="#spr-drop" />
         </svg>
       ) : (
@@ -107,7 +112,12 @@ function CellTileComponent({
       )}
       {cell.multiplier > 1 ? <span className={styles.multiplier}>×{cell.multiplier}</span> : null}
       {cell.isCity ? (
-        <svg className={styles.cityMark} viewBox="0 0 100 100" aria-hidden="true">
+        <svg
+          className={styles.cityMark}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
           <use href="#spr-city" />
         </svg>
       ) : null}
@@ -119,7 +129,12 @@ function CellTileComponent({
         </span>
       ) : null}
       {state === 'claimed' ? (
-        <svg className={styles.stone} viewBox="0 0 100 100" aria-hidden="true">
+        <svg
+          className={styles.stone}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
           <use href="#spr-stone" />
         </svg>
       ) : null}

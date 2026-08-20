@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "lint": "oxlint",
     "test": "node --experimental-strip-types tools/spec.ts",
-    "validate": "node --experimental-strip-types tools/spec.ts && node --experimental-strip-types tools/solve.ts"
+    "validate": "node --experimental-strip-types tools/spec.ts && node --experimental-strip-types tools/solve.ts",
+    "test:e2e": "playwright test",
+    "test:all": "npm run lint && npm test && npm run test:e2e"
   },
   "dependencies": {
     "@fontsource/fraunces": "^5.3.0",
@@ -19,6 +21,7 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

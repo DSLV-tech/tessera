@@ -97,3 +97,26 @@ npm run validate             # test + solver su tutti i 42 livelli
 ```
 
 Pubblicazione: vedi `DEPLOY.md` (GitHub Pages con workflow incluso, o Vercel zero-config).
+
+## Verifiche
+
+```bash
+npm run lint        # oxlint
+npx tsc -b          # tipi
+npm test            # regole del motore, tutte e sei le modalità
+npm run test:e2e    # regressioni di layout e interazione (Playwright)
+npm run validate    # spec + solver: ogni livello ha un oro raggiungibile
+npm run test:all    # lint + motore + e2e
+```
+
+Il solver (`tools/solve.ts`) ricerca il massimo ottenibile su ciascuno dei 42
+livelli e segnala con `KO` quelli la cui soglia d'oro non è raggiungibile. Gira
+in CI a ogni push: un livello impossibile non arriva in produzione.
+
+## Livello del giorno
+
+Ogni giorno viene generato un tabellone nuovo, identico per tutti, a partire
+dalla data UTC (`src/domain/daily.ts`). Non serve alcun server: la generazione è
+deterministica. Le soglie delle medaglie non sono scritte a mano ma calcolate
+dal solver sul tabellone appena creato, così l'oro è sempre davvero ottenibile.
+Il calcolo gira in un Web Worker per non bloccare l'interfaccia.

@@ -2,11 +2,14 @@
  * Service worker di Tessera — offline-first, senza dipendenze.
  *
  * - App shell precaricata all'installazione.
+ * - Il nuovo worker NON si attiva da solo: resta in attesa finché la pagina non
+ *   dà l'ok (messaggio SKIP_WAITING). Attivarsi a metà sessione servirebbe
+ *   asset di due build diverse alla stessa pagina.
  * - Navigazioni: network-first con fallback all'index in cache (SPA offline).
  * - Asset con hash: stale-while-revalidate (rispondi dalla cache, aggiorna dietro).
  * Cambia CACHE per forzare l'aggiornamento a un nuovo rilascio.
  */
-const CACHE = 'tessera-v1';
+const CACHE = 'tessera-v2';
 const SHELL = [
   './',
   './index.html',
@@ -19,8 +22,13 @@ const SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()),
+    caches.open(CACHE).then((cache) => cache.addAll(SHELL)),
   );
+});
+
+// La pagina chiede l'attivazione quando il giocatore accetta l'aggiornamento.
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {

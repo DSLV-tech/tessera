@@ -1,4 +1,4 @@
-/** Verifiche puntuali sulle regole, per tutte e cinque le modalità. */
+/** Verifiche puntuali sulle regole, per tutte e sei le modalità. */
 import { LEVEL_BY_ID } from '../src/domain/levels/index.ts';
 import { simulate, parseBoard } from '../src/domain/engine.ts';
 import type { CellId, LevelDefinition } from '../src/domain/types.ts';
@@ -61,6 +61,18 @@ check('S02 un solo negativo nel gruppo spegne il sigillo', scoreOfSeq('s02', [[1
 // ── PONTI ───────────────────────────────────────────────────────────
 check('P01 due città isolate: nessun fattore di rete', scoreOfSeq('p01', [[1, 1], [5, 1]]), 12);
 check('P01 due città connesse: fattore ×2 su tutta la somma', scoreOfSeq('p01', [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1]]), 24);
+
+// ── SIMMETRIA ───────────────────────────────────────────────────────
+// Conta solo ciò che ha il proprio riflesso: una casella spaiata resta tua ma
+// non vale nulla, e chi sta sull'asse è riflesso di sé stesso.
+check('Y01 un 5 spaiato non vale nulla', scoreOfSeq('y01', [[1, 1]]), 0);
+check('Y01 la coppia speculare incassa entrambi', scoreOfSeq('y01', [[1, 1], [5, 1]]), 10);
+check('Y01 la casella sull\u2019asse conta da sola', scoreOfSeq('y01', [[3, 1]]), 4);
+check('Y02 tre caselle sull\u2019asse, nessun riflesso da pagare', scoreOfSeq('y02', [[3, 1], [3, 2], [3, 3]]), 27);
+check('Y03 il 9 costa il suo riflesso negativo', scoreOfSeq('y03', [[1, 1], [5, 1]]), 1);
+check('Y03 il 6 si specchia in una casella vuota', scoreOfSeq('y03', [[1, 3], [5, 3]]), 6);
+check('Y06 asse orizzontale: la coppia sopra-sotto conta', scoreOfSeq('y06', [[1, 1], [1, 5]]), 12);
+check('Y06 asse orizzontale: lo spaiato resta muto', scoreOfSeq('y06', [[3, 1]]), 0);
 
 console.log(failed === 0 ? '\nTutte le regole si comportano come previsto.' : `\n${failed} verifiche fallite.`);
 process.exit(failed === 0 ? 0 : 1);

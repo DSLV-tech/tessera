@@ -7,6 +7,8 @@ import styles from './ResultOverlay.module.css';
 interface ResultOverlayProps {
   readonly level: LevelDefinition;
   readonly score: number;
+  /** Record personale prima di questa partita, o null se è la prima volta. */
+  readonly previousBest: number | null;
   readonly stonesUsed: number;
   readonly medal: MedalTier;
   readonly hasNext: boolean;
@@ -44,6 +46,7 @@ function detailFor(level: LevelDefinition, score: number, stonesUsed: number, me
 function ResultOverlayComponent({
   level,
   score,
+  previousBest,
   stonesUsed,
   medal,
   hasNext,
@@ -51,6 +54,9 @@ function ResultOverlayComponent({
   onNext,
   onMap,
 }: ResultOverlayProps): React.JSX.Element {
+  // Il record si festeggia solo se il livello è stato davvero superato.
+  const isNewBest = medal !== 'none' && (previousBest === null || score > previousBest);
+
   return (
     <div className={styles.backdrop} role="dialog" aria-modal="true" aria-label="Esito del livello">
       <div className={styles.card}>
@@ -61,6 +67,14 @@ function ResultOverlayComponent({
         <p className={styles.score}>
           {score} <span>punti</span>
         </p>
+        {isNewBest ? (
+          <p className={styles.record}>
+            Nuovo record personale
+            {previousBest !== null ? ` — battuto il ${previousBest}` : ''}
+          </p>
+        ) : previousBest !== null ? (
+          <p className={styles.recordMuted}>Il tuo record su questo livello: {previousBest}</p>
+        ) : null}
         <p className={styles.detail}>{detailFor(level, score, stonesUsed, medal)}</p>
         <div className={styles.actions}>
           <button type="button" className={styles.ghost} onClick={onMap}>

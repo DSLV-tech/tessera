@@ -16,7 +16,9 @@ import styles from './GameView.module.css';
 interface GameViewProps {
   readonly level: LevelDefinition;
   readonly onExit: () => void;
-  readonly onResult: (levelId: string, tier: MedalTier) => void;
+  /** Record personale precedente su questo livello, o null se mai superato. */
+  readonly previousBest: number | null;
+  readonly onResult: (levelId: string, tier: MedalTier, score: number) => void;
   readonly onAdvance: (level: LevelDefinition) => void;
 }
 
@@ -26,6 +28,7 @@ function formatDelta(delta: number): string {
 
 export default function GameView({
   level,
+  previousBest,
   onExit,
   onResult,
   onAdvance,
@@ -36,6 +39,13 @@ export default function GameView({
   const [soundOn, setSoundOn] = useState(sound.enabled);
   // Il tutorial della modalità appare solo la prima volta che la si incontra.
   const [tutorialOpen, setTutorialOpen] = useState(() => !loadSeenModes().has(level.mode));
+  /*
+   * Il record va congelato all'inizio del tentativo. Registrare l'esito
+   * aggiorna subito il record in campagna: leggendo la prop dal vivo, il
+   * riquadro finale confronterebbe il punteggio con sé stesso e non
+   * annuncerebbe mai il sorpasso.
+   */
+  const [baselineBest, setBaselineBest] = useState<number | null>(previousBest);
 
   const { load, state, sim, medal, resolve } = game;
 
@@ -68,7 +78,7 @@ export default function GameView({
 
   useEffect(() => {
     if (!resolved) return;
-    onResult(state.level.id, medal);
+    onResult(state.level.id, medal, sim.score);
     if (medal === 'gold') haptic([20, 40, 20, 40, 60]);
     else if (medal !== 'none') haptic([16, 30, 24]);
     sound.play(
@@ -80,7 +90,13 @@ export default function GameView({
             ? 'win-bronze'
             : 'deny',
     );
-  }, [resolved, medal, onResult, state.level.id]);
+  }, [resolved, medal, sim.score, onResult, state.level.id]);
+
+  // Al nuovo tentativo il riferimento diventa il record appena consolidato.
+  const handleRetry = useCallback(() => {
+    setBaselineBest(previousBest);
+    game.reset();
+  }, [previousBest, game]);
 
   const toggleSound = useCallback(() => {
     const next = !sound.enabled;
@@ -103,7 +119,9 @@ export default function GameView({
 
   const handleHover = useCallback((id: CellId | null) => setHovered(id), []);
 
-  const nextLevel = LEVELS[level.index] ?? null;
+  // index 0 = livello del giorno: sta fuori dalla campagna e non ha un seguito.
+  const isDaily = level.index === 0;
+  const nextLevel = isDaily ? null : (LEVELS[level.index] ?? null);
   const handleNext = useCallback(() => {
     if (nextLevel !== null) onAdvance(nextLevel);
   }, [nextLevel, onAdvance]);
@@ -119,7 +137,8 @@ export default function GameView({
             ←
           </button>
           <p className={styles.sbEyebrow}>
-            {MODE_LABEL[level.mode]} · {level.index}/{LEVELS.length}
+            {MODE_LABEL[level.mode]} ·{' '}
+            {isDaily ? 'quotidiano' : `${level.index}/${LEVELS.length}`}
           </p>
           <div className={styles.sbTools}>
             <button
@@ -191,14 +210,17 @@ export default function GameView({
       </div>
 
       <footer className={styles.actionbar}>
-        <button
-          type="button"
-          className={styles.action}
-          onClick={() => setHintOpen((open) => !open)}
-          aria-expanded={hintOpen}
-        >
-          {hintOpen ? 'Nascondi' : 'Indizio'}
-        </button>
+        {/* Il quotidiano non ha indizi: è lo stesso tabellone per tutti. */}
+        {isDaily ? null : (
+          <button
+            type="button"
+            className={styles.action}
+            onClick={() => setHintOpen((open) => !open)}
+            aria-expanded={hintOpen}
+          >
+            {hintOpen ? 'Nascondi' : 'Indizio'}
+          </button>
+        )}
         <button type="button" className={styles.action} onClick={game.undo} disabled={!game.canUndo}>
           Annulla
         </button>
@@ -219,10 +241,11 @@ export default function GameView({
         <ResultOverlay
           level={level}
           score={sim.score}
+          previousBest={baselineBest}
           stonesUsed={state.moves.length}
           medal={medal}
           hasNext={nextLevel !== null}
-          onRetry={game.reset}
+          onRetry={handleRetry}
           onNext={handleNext}
           onMap={onExit}
         />
